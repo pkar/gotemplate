@@ -128,9 +128,9 @@ lint:
 
 coverprofile:
 	# run tests and create coverage profile
-	go test -coverprofile=bin/cover/coverage.out $(REPO)
+	go test -coverprofile=bin/coverage.out $(REPO)
 	# check heatmap
-	go tool cover -html=bin/cover/coverage.out
+	go tool cover -html=bin/coverage.out
 
 clean:
 	@rm -rf bin/*
