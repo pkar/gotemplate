@@ -1,0 +1,4 @@
+bin
+pkg
+coverage.out
+Dockerfile-e

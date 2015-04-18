@@ -1,0 +1,29 @@
+FROM centos:centos6
+
+ENV VERSION=0.0.1
+ENV APP=apitool
+
+RUN yum install -y epel-release rubygems ruby-devel gcc make rpm-build rpmrebuild rpmdevtools tar yum-utils.noarch && \
+	gem install fpm --bindir=/usr/bin --no-rdoc --no-ri
+
+WORKDIR /root
+COPY bin/linux_amd64/$APP* /root/$APP
+
+RUN \
+	mkdir -p /root/$APP-$VERSION/usr/local/bin && \
+	cp -f $APP /root/$APP-$VERSION/usr/local/bin/ && \
+	chmod +x /root/$APP-$VERSION/usr/local/bin/$APP
+
+RUN \
+	fpm \
+	-s dir \
+	-t rpm \
+	--name $APP \
+	--version $VERSION \
+	-C /root/$APP-$VERSION \
+	--force \
+	--provides "$APP = $VERSION-1" \
+	.
+
+VOLUME /data
+CMD /bin/cp $APP-$VERSION-1.x86_64.rpm /data/$APP-$VERSION-1.x86_64.rpm
